@@ -1,0 +1,17 @@
+<!-- upload.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload MP3</title>
+</head>
+<body>
+  <h1>Upload an MP3 File</h1>
+  <form action="upload.php" method="post" enctype="multipart/form-data">
+    <label for="mp3file">Choose MP3 to upload:</label>
+    <input type="file" name="mp3file" id="mp3file" accept=".mp3,audio/*" required>
+    <br><br>
+    <button type="submit">Upload MP3</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wireless Notice Board Control</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #f6f8fb;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 420px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      padding: 32px 24px 28px;
+    }
+    .logo {
+      display: block;
+      margin: 0 auto 24px;
+      max-width: 120px;
+    }
+    h2 {
+      text-align: center;
+      color: #800000;
+      margin-bottom: 32px;
+      font-size: 1.6rem;
+    }
+    .message-block, .voice-block {
+      margin-bottom: 28px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #800000;
+    }
+    .voice-block {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .message-block:last-child {
+      border-bottom: 1px solid #e0e4ea;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #385273;
+      font-weight: 500;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #800000;
+      border-radius: 7px;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input[type="file"] {
+      margin-bottom: 10px;
+    }
+    input[type="text"]:focus {
+      border-color: #2465c3;
+    }
+    button {
+      background: #800000;
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 7px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-weight: 600;
+      margin-right: 6px;
+    }
+    button:hover {
+      background: #800000;
+    }
+    .voice-note {
+      font-size: 0.93rem;
+      color: #888;
+      margin-bottom: 8px;
+    }
+    @media (max-width: 480px) {
+      .container {
+        padding: 18px 7px;
+      }
+    }
+  </style>
+</head>
+<body onload="startConnect()">
+  <div class="container">
+    <!-- Company Logo (replace src with your logo file path) -->
+    <img class="logo" src="logo.png" alt="Company Logo">
+    <h2>Wireless Notice Board Control</h2>
+    
+    <!-- Message 1 Block -->
+    <div class="message-block">
+      <label for="msg1">Message 1</label>
+      <input type="text" id="msg1" placeholder="Enter first message">
+      <button onclick="SendMessage('M1' + document.getElementById('msg1').value)">Send/Update</button>
+    </div>
+
+    <!-- Message 2 Block -->
+    <div class="message-block">
+      <label for="msg2">Message 2</label>
+      <input type="text" id="msg2" placeholder="Enter second message">
+      <button onclick="SendMessage('M2' + document.getElementById('msg2').value)">Send/Update</button>
+    </div>
+
+    <!-- MP3 Voice Message Upload Block -->
+    <div class="voice-block">
+	
+  
+      <label for="voiceMsg">MP3 Voice Message</label>
+	  <form action="upload.php" method="post" enctype="multipart/form-data">
+	
+      <span class="voice-note">(Only .mp3 files allowed)</span>
+      <input type="file" name="mp3file" id="mp3file" accept=".mp3,audio/*" required>
+	  <table>
+      <tr>
+	  <td><button type="submit">Upload Voice</button>
+	  </form></td>
+	  <td><button onclick="PingUpdate()">Update to Device 	</button></td>
+	  
+	  </tr>
+	  </table>
+    </div>
+	
+  </div>
+
+  <script>
+	function PingUpdate()
+	{
+		var message = new Paho.MQTT.Message("U");
+		message.destinationName = "indore/announcement/msg";
+		message.qos = 0; // Optional: 0, 1, or 2 (default is 0)
+		client.send(message);
+	
+	}
+    function sendMsg(num) {
+      const msg = document.getElementById('msg'+num).value.trim();
+      if(!msg) {
+        alert('Please enter a message!');
+        return;
+      }
+      // TODO: Implement your API call or logic here
+      alert('Message '+num+' sent: ' + msg);
+      // Replace alert with your backend AJAX call as needed
+    }
+
+    function uploadVoice() {
+      const input = document.getElementById('voiceMsg');
+      const file = input.files[0];
+      if(!file) {
+        alert('Please select an MP3 file!');
+        return;
+      }
+      if(file.type !== "audio/mp3" && file.type !== "audio/mpeg") {
+        alert('Only MP3 files are allowed!');
+        return;
+      }
+      // TODO: Implement your file upload logic here (AJAX, FormData, etc.)
+      alert('Voice message "' + file.name + '" selected for upload.');
+      // Replace alert with actual upload logic
+    }
+  </script>
+  
+  
+<script>
+
+
+
+var numDeltas = 100;
+var delay = 10; //milliseconds
+var i = 0;
+var deltaLat;
+var deltaLng;
+
+
+
+
+</script>    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+      <script>
+   // Called after form input is processed
+function startConnect() {
+	
+	//NearestHospital(22.761619, 75.885466);
+	//alert(distance(22.733711, 75.890098, 22.748696, 75.894822, 'K'));
+    // Generate a random client ID
+    clientID = "clientID-" + parseInt(Math.random() * 659);
+
+    // Fetch the hostname/IP address and port number from the form
+    //host = document.getElementById("host").value;
+    //port = document.getElementById("port").value;
+
+    // Print output for the user in the messages div
+    //document.getElementById("messages").innerHTML += '<span>Connecting to: ' + host + ' on port: ' + port + '</span><br/>';
+    //document.getElementById("messages").innerHTML += '<span>Using the following client value: ' + clientID + '</span><br/>';
+
+    // Initialize new Paho client connection
+    client = new Paho.MQTT.Client('broker.emqx.io', 8083, clientID);
+
+    // Set callback handlers
+    client.onConnectionLost = onConnectionLost;
+    client.onMessageArrived = onMessageArrived;
+
+    // Connect the client, if successful, call onConnect function
+    client.connect({ 
+        onSuccess: onConnect,
+    });
+}
+
+function PingUpdate()
+{
+	var message = new Paho.MQTT.Message("U");
+	message.destinationName = "indore/announcement/msg";
+	message.qos = 0; // Optional: 0, 1, or 2 (default is 0)
+	client.send(message);
+
+}
+	
+	function SendMessage(msg)
+{
+	var message = new Paho.MQTT.Message(msg);
+	message.destinationName = "indore/announcement/msg";
+	message.qos = 0; // Optional: 0, 1, or 2 (default is 0)
+	client.send(message);
+
+}
+
+// Called when the client connects
+function onConnect() {
+	alert("Connected");
+	console.log("Connected")
+    // Fetch the MQTT topic from the form
+    topic = 'indore/parking/#';
+
+    // Print output for the user in the messages div
+    //document.getElementById("messages").innerHTML += '<span>Subscribing to: ' + topic + '</span><br/>';
+
+    // Subscribe to the requested topic
+    client.subscribe(topic);
+}
+
+// Called when the client loses its connection
+function onConnectionLost(responseObject) {
+    console.log("onConnectionLost: Connection Lost");
+    if (responseObject.errorCode !== 0) {
+        console.log("onConnectionLost: " + responseObject.errorMessage);
+    }
+	client.connect({ 
+        onSuccess: onConnect,
+    });
+}
+
+// Called when a message arrives
+function onMessageArrived(message) {
+    console.log("onMessageArrived: " +  message.payloadString);
+    console.log("onMessageArrived from: " +  message.destinationName);
+	
+	//var hos = NearestHospital(obj.sda, obj.log);
+	//document.getElementById("messages1").innerHTML += '<span>Nearest Hospital : ' + hos + " KM";
+	//updateScroll1();
+	//transition1(obj.sda, obj.log);
+    //document.getElementById("messages").innerHTML += '<span>Topic: ' + message.destinationName + '  | ' + message.payloadString + '</span><br/>';
+    
+}
+
+// Called when the disconnection button is pressed
+function startDisconnect() 
+{
+    client.disconnect();
+    document.getElementById("messages").innerHTML += '<span>Disconnected</span><br/>';
+    updateScroll(); // Scroll to bottom of window
+}
+
+// Updates #messages div to auto-scroll
+function updateScroll() 
+{
+    var element = document.getElementById("messages");
+    element.scrollTop = element.scrollHeight;
+}
+function updateScroll1() 
+{
+    var element = document.getElementById("messages1");
+    element.scrollTop = element.scrollHeight;
+}
+
+
+
+
+
+</script>
+</body>
+</html>
